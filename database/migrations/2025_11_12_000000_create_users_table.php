@@ -15,10 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+            $table->string('juusyo')->nullable();
+            $table->string('tell');
+            $table->foreignId('category_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
+
         });
     }
 

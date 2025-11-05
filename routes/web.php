@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserContoroller;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
+Route::get('/users',[UserContoroller::class, 'index'])->name('users');
+
+Route::get('/users/{user}',[UserContoroller::class, 'show'])->name('show');
+
+Route::get('/users/create',[UserContoroller::class, 'create'])->name('create');
+
+Route::post('/users/create',[UserContoroller::class, 'check'])->name('check');
+
