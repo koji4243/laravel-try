@@ -17,9 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('juusyo')->nullable();
             $table->string('tell');
-            $table->foreignId('category_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
-
         });
     }
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>内容確認</title>
+    <title>更新画面</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 </head>
@@ -21,14 +21,15 @@
         <div class="container">
             <div class="row">
                 <div class="col-6 mx-auto my-4">
-                    <h1 class="h3 my-2 text-center">下記の内容で登録しますか？</h1>
+                    <h1 class="h3 my-2 text-center">下記の内容で更新しますか？</h1>
                     <div class="mb-2">
                         <button onclick="history.back()" class="btn btn-outline-primary my-3">&lt; 戻る</button>
                     </div>
 
-                    <form action="{{ route('store') }}" method="POST">
+                    <form action="{{ route('put', $user) }}" method="POST">
                                 <!-- post送信用 -->
                         @csrf
+                        @method('PUT')
                         <div class="form-group mb-1">
                             <input type="hidden" name="name" value="{{ $users['name'] }}">
                         </div>
@@ -56,7 +57,7 @@
                         @endforeach
                     </p>
 
-                    <button type="submit" class="ms-auto btn btn-primary d-block">登録する</button>
+                    <button type="submit" class="ms-auto btn btn-primary d-block">更新する</button>
                     </form>
                 </div>
             </div>

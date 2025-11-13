@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>新規登録</title>
+    <title>編集</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 </head>
@@ -29,7 +29,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-6 mx-auto my-4">
-                    <h1 class="h3 my-2 text-center">新規登録</h1>
+                    <h1 class="h3 my-2 text-center">どのように編集しますか？</h1>
                     <div class="mb-2">
                         <a href="{{ route('users') }}" class="text-decoration-none">&lt; 戻る</a>
                     </div>
@@ -44,42 +44,48 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('check') }}" method="post">
+                    <form action="{{ route('editcheck', $users) }}" method="POST">
                         @csrf
                         <div class="form-group mb-1">
                             <label for="title">名前</label>
-                            <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}">
+                            <input type="text" class="form-control" id="name" name="name" value="{{ old('name' , $users->name) }}">
                         </div>
                         <div class="form-group mb-1">
                             <label for="title">email</label>
-                            <input type="text" class="form-control" id="email" name="email" value="{{ old('email') }}">
+                            <input type="text" class="form-control" id="email" name="email" value="{{ old('email', $users->email) }}">
                         </div>
                         <div class="form-group mb-1">
                             <label for="content">住所</label>
-                            <textarea class="form-control" id="juusyo" name="juusyo">{{ old('juusyo') }}</textarea>
+                            <textarea class="form-control" id="juusyo" name="juusyo">{{ old('juusyo', $users->juusyo) }}</textarea>
                         </div>
                         <div class="form-group mb-1">
                             <label for="title">電話番号</label>
-                            <input type="text" class="form-control" id="tell" name="tell" value="{{ old('tell') }}">
+                            <input type="text" class="form-control" id="tell" name="tell" value="{{ old('tell', $users->tell) }}">
                         </div>
                         <div class="py-2 mb-2">種別　※1つ以上選択してください<br>
                             <label for="namae">
-                                <input id="namae" type="checkbox" name="categories[]" value="友達">友達
+                                <input id="namae" type="checkbox" name="categories[]" value="友達"
+                                {{ $users->categories->contains('category', '友達') ? 'checked' : ''}}>友達
                             </label>
                             <label for="job">
-                                <input id="job" type="checkbox" name="categories[]" value="仕事">仕事
+                                <input id="job" type="checkbox" name="categories[]" value="仕事"
+                                {{ $users->categories->contains('category', '仕事') ? 'checked' : ''}}>仕事
                             </label>
                             <label for="fle">
-                                <input id="fle" type="checkbox" name="categories[]" value="flend">flend
+                                <input id="fle" type="checkbox" name="categories[]" value="flend"
+                                {{ $users->categories->contains('category', 'flend') ? 'checked' : ''}}>flend
                             </label>
                             <label for="family">
-                                <input id="family" type="checkbox" name="categories[]" value="家族">家族
+                                <input id="family" type="checkbox" name="categories[]" value="家族"
+                                {{ $users->categories->contains('category', '家族') ? 'checked' : ''}}>家族
                             </label>
                             <label for="scho">
-                                <input id="scho" type="checkbox" name="categories[]" value="学校">学校
+                                <input id="scho" type="checkbox" name="categories[]" value="学校"
+                                {{ $users->categories->contains('category', '学校') ? 'checked' : ''}}>学校
                             </label>
                             <label for="area">
-                                <input id="area" type="checkbox" name="categories[]" value="地域">地域
+                                <input id="area" type="checkbox" name="categories[]" value="地域"
+                                {{ $users->categories->contains('category', '地域') ? 'checked' : ''}}>地域
                             </label>
                         </div>
 

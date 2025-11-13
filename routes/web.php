@@ -16,9 +16,16 @@ use App\Http\Controllers\UserContoroller;
 
 Route::get('/users',[UserContoroller::class, 'index'])->name('users');
 
-Route::get('/users/{user}',[UserContoroller::class, 'show'])->name('show');
-
 Route::get('/users/create',[UserContoroller::class, 'create'])->name('create');
 
-Route::post('/users/create',[UserContoroller::class, 'check'])->name('check');
+Route::post('/users/check',[UserContoroller::class, 'check'])->name('check');
 
+Route::post('/users/store',[UserContoroller::class, 'store'])->name('store');
+
+Route::get('/users/{user}',[UserContoroller::class, 'edit'])->name('edit');
+
+Route::post('/users/{user}/check',[UserContoroller::class, 'editCheck'])->name('editcheck');
+
+Route::put('/users/{user}/put',[UserContoroller::class, 'update'])->name('put');
+
+Route::delete('/users/{user}/delete',[UserContoroller::class, 'delete'])->name('delete');

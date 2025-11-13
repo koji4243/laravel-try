@@ -14,7 +14,6 @@ class User extends Model
         'email',
         'juusyo',
         'tell',
-        'category_id'
     ];
     public function categories()
 {

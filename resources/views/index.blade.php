@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +9,9 @@
 </head>
 <body>
     <style>
-
+        span{
+            margin-right: 4px;
+        }
     </style>
     <header>
         <nav class="navbar navbar-light bg-light">
@@ -18,16 +20,30 @@
             </div>
         </nav>
     </header>
-
     <main>
         <div class="container">
-        <h1 class="h3 my-3 text-center">アドレス帳一覧</h1>
+            <h1 class="h3 my-3 text-center">アドレス帳一覧</h1>
 
-        <div>
-            <a href="{{ route('create') }}" class="m-2 btn btn-primary text-decoration-none">新規登録</a>
-        </div>
+            @if(session('create'))
+                <div class="text-center alert alert-success">
+                    {{ session('create') }}
+                </div>
+            @endif
+            @if(session('update'))
+                <div class="text-center alert alert-success">
+                    {{ session('update') }}
+                </div>
+            @endif
+            @if(session('delete'))
+                <div class="text-center alert alert-danger">
+                    {{ session('delete') }}
+                </div>
+            @endif
 
-            <table class="table my-2 d-block">
+            <div>
+                <a href="{{ route('create') }}" class="m-2 btn btn-primary text-decoration-none">新規登録</a>
+            </div>
+            <table class="table my-2">
                 <thead>
                     <tr>
                         <th>名前：</th>
@@ -45,9 +61,8 @@
                         <td>{{ $user->juusyo }}<br>
 
                             <div class="d-flex my-2">
-                                <a href="" class="btn btn-outline-info d-block me-1">詳細</a>
-                                <a href="" class="btn btn-outline-warning  d-block me-1">編集</a>
-                                <form action="" method="POST" onsubmit="return confirm('本当に削除してもよろしいですか？');">
+                                <a href="{{ route('edit',$user) }}" class="btn btn-outline-warning  d-block me-1">編集</a>
+                                <form action="{{ route('delete', $user) }}" method="POST" onsubmit="return confirm('本当に削除してもよろしいですか？');">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-outline-danger">削除</button>
@@ -55,27 +70,18 @@
                             </div>
                         </td>
                         <td>{{ $user->tell }}</td>
-                        <td>{{ $user->category_id}}</td>
+                        <td>
+                            @foreach ($user->categories as $category)
+                                <span>・{{ $category->category }}</span>
+                            @endforeach
+                        </td>
                     </tr>
 
                     @empty
-                    <p>登録がありません</p>
+                    <p class="h4 p-2 text-center">登録がありません</p>
                 @endforelse
 
                 </tbody>
-
-
-                        <div class="d-flex">
-                            <a href="{{ route('show', $user)}}" class="btn btn-outline-info d-block me-1">詳細</a>
-                            <a href="" class="btn btn-outline-warning  d-block me-1">編集</a>
-
-                            <form action="" method="POST" onsubmit="return confirm('本当に削除してもよろしいですか？');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-outline-danger">削除</button>
-                            </form>
-                        </div>
-
                         
                 </div>
             </table>

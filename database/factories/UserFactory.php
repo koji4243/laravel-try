@@ -15,8 +15,6 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'juusyo' => fake()->address(),
             'tell' => fake()->phoneNumber(),
-            'category_id' => fake()->numberBetween(1, 6)
-
         ];
     }
 }
