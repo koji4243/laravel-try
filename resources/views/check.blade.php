@@ -22,12 +22,13 @@
             <div class="row">
                 <div class="col-6 mx-auto my-4">
                     <h1 class="h3 my-2 text-center">下記の内容で登録しますか？</h1>
-                    <div class="mb-2">
-                        <button onclick="history.back()" class="btn btn-outline-primary my-3">&lt; 戻る</button>
-                    </div>
+
+                    <form action="{{ route('createback') }}" method="POST">
+                        @csrf
+                        <button class="btn btn-outline-primary my-3" type="submit">&lt;戻る</button>
+                    </form>
 
                     <form action="{{ route('store') }}" method="POST">
-                                <!-- post送信用 -->
                         @csrf
                         <div class="form-group mb-1">
                             <input type="hidden" name="name" value="{{ $users['name'] }}">

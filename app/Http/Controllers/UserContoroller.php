@@ -15,8 +15,14 @@ class UserContoroller extends Controller
         $users = User::orderBy('updated_at', 'desc')->get();
         return view('index', compact('users'));
     }
-    public function create(){
-        return view('create');
+    public function create(Category $category, Request $request){
+        $categories =Category::all();
+        return view('create', compact('categories'));
+    }
+
+    public function createback(UserRequest $request){
+        return redirect()->route('create')
+                        ->withInput($request->all());
     }
     public function check(UserRequest $request){
 
@@ -48,11 +54,11 @@ class UserContoroller extends Controller
 
         return view('edit',compact('users','user'));
     }
-    public function editCheck(CheckRequest $request, User $user){
+    public function editCheck(UserRequest $request, User $user){
         $users = $request->all();
         return view('editcheck',compact('users', 'user'));
     }
-    public function update(User $user, CheckRequest $request){
+    public function update(User $user, UserRequest $request){
         $user = User::findOrFail($user->id);
 
         $user->name = $request->input('name');

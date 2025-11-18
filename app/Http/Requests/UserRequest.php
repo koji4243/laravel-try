@@ -21,12 +21,18 @@ class UserRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'name' => 'required',
-            'email' => 'required|email|unique:users,email',
             'juusyo' => 'max:200',
-            'tell' => 'required|numeric',
+            'tell' => 'required|regex:/^[0-9]+$/',
             'categories' => 'required|array'
         ];
+        //ユーザー以外からemailが被ったらバリデーション効かせる
+        if($this->route('user')){
+            $rules['email'] = 'required|email|unique:users,email,' . $this->user->id;
+        }else{
+            $rules['email'] = 'required|email|unique:users,email';
+        }
+    return $rules;
     }
 }
