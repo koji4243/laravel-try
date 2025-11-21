@@ -76,7 +76,6 @@
                             @endforeach
                         </td>
                     </tr>
-
                     @empty
                     <p class="h4 p-2 text-center">登録がありません</p>
                 @endforelse

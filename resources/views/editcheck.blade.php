@@ -22,14 +22,15 @@
             <div class="row">
                 <div class="col-6 mx-auto my-4">
                     <h1 class="h3 my-2 text-center">下記の内容で更新しますか？</h1>
-                    <div class="mb-2">
-                        <button onclick="history.back()" class="btn btn-outline-primary my-3">&lt; 戻る</button>
-                    </div>
 
                     <form action="{{ route('put', $user) }}" method="POST">
                                 <!-- post送信用 -->
                         @csrf
                         @method('PUT')
+                        <div class="mb-2">
+                            <button name="action" value="editback" class="btn btn-outline-primary my-3" type="submit">&lt;戻る</button>
+                        </div>
+
                         <div class="form-group mb-1">
                             <input type="hidden" name="name" value="{{ $users['name'] }}">
                         </div>
@@ -47,17 +48,17 @@
                         @endforeach
                                 <!--　$categoryがちゃんと渡せているか確認必須　-->
 
-                    <p>名前：{{ $users['name'] }}</p>
-                    <p>email：{{ $users['email'] }}</p>
-                    <p>住所：{{ $users['juusyo'] }}</p>
-                    <p>電話番号：{{ $users['tell'] }}</p>
-                    <p>種別：
-                        @foreach ($users['categories'] as $category)
-                            <span>{{ $category }},</span>
-                        @endforeach
-                    </p>
+                        <p>名前：{{ $users['name'] }}</p>
+                        <p>email：{{ $users['email'] }}</p>
+                        <p>住所：{{ $users['juusyo'] }}</p>
+                        <p>電話番号：{{ $users['tell'] }}</p>
+                        <p>種別：
+                            @foreach ($selectedCategories as $value)
+                                <span>{{ $value->category }},</span>
+                            @endforeach
+                        </p>
 
-                    <button type="submit" class="ms-auto btn btn-primary d-block">更新する</button>
+                        <button type="submit" class="ms-auto btn btn-primary d-block">更新する</button>
                     </form>
                 </div>
             </div>

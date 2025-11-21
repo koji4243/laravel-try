@@ -63,39 +63,13 @@
                             <input type="text" class="form-control" id="tell" name="tell" value="{{ old('tell') }}">
                         </div>
 
-<!-- {{ $categories }} ← checkboxをforeach用で使う -->
-
                         <div class="py-2 mb-2">種別　※1つ以上選択してください<br>
-                            <label for="namae">
-                                <input id="namae" type="checkbox" name="categories[]" value="友達"
-                                    {{ in_array('友達', old('categories', [])) ? 'checked' : '' }}>友達
-                            </label>
-
-                            <label for="job">
-                                <input id="job" type="checkbox" name="categories[]" value="仕事"
-                                    {{ in_array('仕事', old('categories', [])) ? 'checked' : '' }}>仕事
-                            </label>
-
-                            <label for="fle">
-                                <input id="fle" type="checkbox" name="categories[]" value="flend"
-                                    {{ in_array('flend', old('categories', [])) ? 'checked' : '' }}>flend
-                            </label>
-
-                            <label for="family">
-                                <input id="family" type="checkbox" name="categories[]" value="家族"
-                                    {{ in_array('家族', old('categories', [])) ? 'checked' : '' }}>家族
-                            </label>
-
-                            <label for="scho">
-                                <input id="scho" type="checkbox" name="categories[]" value="学校"
-                                    {{ in_array('学校', old('categories', [])) ? 'checked' : '' }}>学校
-                            </label>
-
-                            <label for="area">
-                                <input id="area" type="checkbox" name="categories[]" value="地域"
-                                    {{ in_array('地域', old('categories', [])) ? 'checked' : '' }}>地域
-                            </label>
-                        </div>
+                            @foreach ($categories as $category)
+                                <label for="{{ $category->id }}">
+                                    <input id="{{ $category->id }}" type="checkbox" name="categories[]" value="{{ $category->id }}"
+                                    {{ in_array($category->id, old('categories', [])) ? 'checked' : '' }}>{{ $category->category }}
+                                </label>
+                            @endforeach
 
                         <button type="submit" class="ms-auto btn btn-primary d-block">確認画面へ</button>
                     </form>

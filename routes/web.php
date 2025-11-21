@@ -13,9 +13,6 @@ use App\Http\Controllers\UserContoroller;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::post('/users/createback',[UserContoroller::class, 'createback'])->name('createback');
-
-
 
 
 Route::get('/users',[UserContoroller::class, 'index'])->name('users');

@@ -11,8 +11,7 @@ use App\Http\Requests\UserRequest;
 class UserContoroller extends Controller
 {
     public function index(){
-
-        $users = User::orderBy('updated_at', 'desc')->get();
+        $users = User::with('categories')->orderBy('updated_at', 'desc')->get();
         return view('index', compact('users'));
     }
     public function create(Category $category, Request $request){
@@ -20,18 +19,18 @@ class UserContoroller extends Controller
         return view('create', compact('categories'));
     }
 
-    public function createback(UserRequest $request){
-        return redirect()->route('create')
-                        ->withInput($request->all());
-    }
-    public function check(UserRequest $request){
-
+    public function check(UserRequest $request,Category $category){
         $users = $request->all();
-        // dd(vars: $users);
-        return view('check',compact('users'));
+        $categoryIds = $request->categories;
+        $selectedCategories = Category::whereIn('id', $categoryIds)->get();
+        return view('check',compact('users', 'selectedCategories'));
     }
         public function store(UserRequest $request){
-        // dd(vars: $request);
+        if($request->action === 'back'){
+            return redirect()->route('create')
+                            ->withInput();
+        }
+
         $user = new User();
         $user->name = $request->input('name');
         $user->email = $request->input('email');
@@ -39,40 +38,34 @@ class UserContoroller extends Controller
         $user->tell = $request->input('tell');
         $user->save();
 
-        $categoryNames = $request->categories; // ['友達', '会社', '家族']にidを割り当てる
-        $categoryIds = Category::whereIn('category', $categoryNames)
-                                ->pluck('id')
-                                ->toArray();
-        $user->categories()->attach($categoryIds);
-
+        $user->categories()->attach($request->categories);
         return redirect()->route('users')
                         ->with('create', '新規登録完了しました');
     }
     public function edit(User $user){
         $categories = Category::all();
         $users = User::with('categories')->find($user->id);
-
-        return view('edit',compact('users','user'));
+        return view('edit',compact('users','user', 'categories'));
     }
     public function editCheck(UserRequest $request, User $user){
         $users = $request->all();
-        return view('editcheck',compact('users', 'user'));
+        $categoryIds = $request->categories;
+        $selectedCategories = Category::whereIn('id', $categoryIds)->get();
+        return view('editcheck',compact('users', 'user', 'selectedCategories'));
     }
     public function update(User $user, UserRequest $request){
+        if($request->action === 'editback'){
+            return redirect()->route('edit', $user)
+                            ->withInput();
+        }
         $user = User::findOrFail($user->id);
-
         $user->name = $request->input('name');
         $user->email = $request->input('email');
         $user->juusyo = $request->input('juusyo');
         $user->tell = $request->input('tell');
         $user->save();
 
-        $categoryNames = $request->categories; // ['友達', '会社', '家族'] 形式
-        $categoryIds = Category::whereIn('category', $categoryNames)
-                                ->pluck('id')
-                                ->toArray();
-        $user->categories()->sync($categoryIds);
-
+        $user->categories()->sync($request->categories);
         return redirect()->route('users')
                     ->with('update', '更新完了しました');
     }

@@ -63,30 +63,15 @@
                             <input type="text" class="form-control" id="tell" name="tell" value="{{ old('tell', $users->tell) }}">
                         </div>
                         <div class="py-2 mb-2">種別　※1つ以上選択してください<br>
-                            <label for="namae">
-                                <input id="namae" type="checkbox" name="categories[]" value="友達"
-                                {{ $users->categories->contains('category', '友達') ? 'checked' : ''}}>友達
-                            </label>
-                            <label for="job">
-                                <input id="job" type="checkbox" name="categories[]" value="仕事"
-                                {{ $users->categories->contains('category', '仕事') ? 'checked' : ''}}>仕事
-                            </label>
-                            <label for="fle">
-                                <input id="fle" type="checkbox" name="categories[]" value="flend"
-                                {{ $users->categories->contains('category', 'flend') ? 'checked' : ''}}>flend
-                            </label>
-                            <label for="family">
-                                <input id="family" type="checkbox" name="categories[]" value="家族"
-                                {{ $users->categories->contains('category', '家族') ? 'checked' : ''}}>家族
-                            </label>
-                            <label for="scho">
-                                <input id="scho" type="checkbox" name="categories[]" value="学校"
-                                {{ $users->categories->contains('category', '学校') ? 'checked' : ''}}>学校
-                            </label>
-                            <label for="area">
-                                <input id="area" type="checkbox" name="categories[]" value="地域"
-                                {{ $users->categories->contains('category', '地域') ? 'checked' : ''}}>地域
-                            </label>
+                            @foreach ($categories as $category)
+                                <label for="{{ $category->id }}">
+                                    <input id="{{ $category->id }}" 
+                                        type="checkbox" name="categories[]" 
+                                        value="{{ $category->id }}"
+                                        {{ in_array($category->id, old('categories', $users->categories->pluck('id')->toArray())) ? 'checked' : '' }}>
+                                    {{ $category->category }}
+                                </label>
+                            @endforeach
                         </div>
 
                         <button type="submit" class="ms-auto btn btn-primary d-block">確認画面へ</button>

@@ -23,13 +23,11 @@
                 <div class="col-6 mx-auto my-4">
                     <h1 class="h3 my-2 text-center">下記の内容で登録しますか？</h1>
 
-                    <form action="{{ route('createback') }}" method="POST">
-                        @csrf
-                        <button class="btn btn-outline-primary my-3" type="submit">&lt;戻る</button>
-                    </form>
 
                     <form action="{{ route('store') }}" method="POST">
                         @csrf
+                        <button name="action" value="back" class="btn btn-outline-primary my-3" type="submit">&lt;戻る</button>
+
                         <div class="form-group mb-1">
                             <input type="hidden" name="name" value="{{ $users['name'] }}">
                         </div>
@@ -52,8 +50,8 @@
                     <p>住所：{{ $users['juusyo'] }}</p>
                     <p>電話番号：{{ $users['tell'] }}</p>
                     <p>種別：
-                        @foreach ($users['categories'] as $category)
-                            <span>{{ $category }},</span>
+                        @foreach ($selectedCategories as $value)
+                            <span>{{ $value->category }},</span>
                         @endforeach
                     </p>
 
