@@ -19,13 +19,13 @@ Route::get('/users',[UserContoroller::class, 'index'])->name('users');
 
 Route::get('/users/create',[UserContoroller::class, 'create'])->name('create');
 
-Route::post('/users/check',[UserContoroller::class, 'check'])->name('check');
+Route::match(['get','post'],'/users/check',[UserContoroller::class, 'check'])->name('check');
 
 Route::post('/users/store',[UserContoroller::class, 'store'])->name('store');
 
 Route::get('/users/edit/{user}',[UserContoroller::class, 'edit'])->name('edit');
 
-Route::post('/users/editcheck/{user}',[UserContoroller::class, 'editCheck'])->name('editcheck');
+Route::match(['get','post'],'/users/editcheck/{user}',[UserContoroller::class, 'editCheck'])->name('editcheck');
 
 Route::put('/users/put/{user}',[UserContoroller::class, 'update'])->name('put');
 

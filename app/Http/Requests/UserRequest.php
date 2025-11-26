@@ -21,6 +21,10 @@ class UserRequest extends FormRequest
      */
     public function rules(): array
     {
+        if($this->input('action') === 'go' || $this->input('action') === 'back' || $this->input('action') === 'editback'){
+            return [];
+        }
+
         $rules = [
             'name' => 'required',
             'juusyo' => 'max:200',
@@ -33,6 +37,6 @@ class UserRequest extends FormRequest
         }else{
             $rules['email'] = 'required|email|unique:users,email';
         }
-    return $rules;
+        return $rules;
     }
 }

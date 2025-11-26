@@ -24,41 +24,23 @@
                     <h1 class="h3 my-2 text-center">下記の内容で更新しますか？</h1>
 
                     <form action="{{ route('put', $user) }}" method="POST">
-                                <!-- post送信用 -->
                         @csrf
                         @method('PUT')
                         <div class="mb-2">
                             <button name="action" value="editback" class="btn btn-outline-primary my-3" type="submit">&lt;戻る</button>
                         </div>
 
-                        <div class="form-group mb-1">
-                            <input type="hidden" name="name" value="{{ $users['name'] }}">
-                        </div>
-                        <div class="form-group mb-1">
-                            <input type="hidden" name="email" value="{{ $users['email'] }}">
-                        </div>
-                        <div class="form-group mb-1">
-                            <input type="hidden" name="juusyo" value="{{ $users['juusyo'] }}">
-                        </div>
-                        <div class="form-group mb-1">
-                            <input type="hidden" name="tell" value="{{ $users['tell'] }}">
-                        </div>
-                        @foreach ($users['categories'] as $category)
-                            <input type="hidden" name="categories[]" value="{{ $category }}">
-                        @endforeach
-                                <!--　$categoryがちゃんと渡せているか確認必須　-->
-
-                        <p>名前：{{ $users['name'] }}</p>
-                        <p>email：{{ $users['email'] }}</p>
-                        <p>住所：{{ $users['juusyo'] }}</p>
-                        <p>電話番号：{{ $users['tell'] }}</p>
+                        <p>名前：{{ $session_user['name'] }}</p>
+                        <p>email：{{ $session_user['email'] }}</p>
+                        <p>住所：{{ $session_user['juusyo'] }}</p>
+                        <p>電話番号：{{ $session_user['tell'] }}</p>
                         <p>種別：
-                            @foreach ($selectedCategories as $value)
-                                <span>{{ $value->category }},</span>
+                            @foreach ($session_user['categories'] as $category)
+                                <span>{{ $category }},</span>
                             @endforeach
                         </p>
 
-                        <button type="submit" class="ms-auto btn btn-primary d-block">更新する</button>
+                        <button name="action" value="go" type="submit" class="ms-auto btn btn-primary d-block">更新する</button>
                     </form>
                 </div>
             </div>

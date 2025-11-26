@@ -14,31 +14,37 @@ class UserContoroller extends Controller
         $users = User::with('categories')->orderBy('updated_at', 'desc')->get();
         return view('index', compact('users'));
     }
-    public function create(Category $category, Request $request){
+    public function create(Category $category,){
         $categories =Category::all();
         return view('create', compact('categories'));
     }
 
-    public function check(UserRequest $request,Category $category){
-        $users = $request->all();
-        $categoryIds = $request->categories;
-        $selectedCategories = Category::whereIn('id', $categoryIds)->get();
-        return view('check',compact('users', 'selectedCategories'));
+    public function check(UserRequest $request){
+                            // "create_key"をセッションに入れる
+        $request->session()->put('create_key', $request->all());
+        $session_user = $request->session()->get('create_key');
+
+        $categoryNames = Category::whereIn('id', $session_user['categories'])->pluck('category')->toArray();
+        $session_user['categories'] = $categoryNames;
+        return view('check',compact('session_user'));
     }
         public function store(UserRequest $request){
         if($request->action === 'back'){
             return redirect()->route('create')
-                            ->withInput();
+                            ->withInput(session('create_key'));
         }
+        $createUser = $request->session()->get('create_key');
 
         $user = new User();
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-        $user->juusyo = $request->input('juusyo');
-        $user->tell = $request->input('tell');
+        $user->name = $createUser['name'];
+        $user->email = $createUser['email'];
+        $user->juusyo = $createUser['juusyo'];
+        $user->tell = $createUser['tell'];
         $user->save();
 
-        $user->categories()->attach($request->categories);
+        $categories = $createUser['categories']; 
+        $user->categories()->attach($categories);
+        $request->session()->forget('create_key');
         return redirect()->route('users')
                         ->with('create', '新規登録完了しました');
     }
@@ -48,24 +54,30 @@ class UserContoroller extends Controller
         return view('edit',compact('users','user', 'categories'));
     }
     public function editCheck(UserRequest $request, User $user){
-        $users = $request->all();
-        $categoryIds = $request->categories;
-        $selectedCategories = Category::whereIn('id', $categoryIds)->get();
-        return view('editcheck',compact('users', 'user', 'selectedCategories'));
+        $request->session()->put('edit_key', $request->all());
+        $session_user = $request->session()->get('edit_key');
+
+        $categoryNames = Category::whereIn('id', $session_user['categories'])->pluck('category')->toArray();
+        $session_user['categories'] = $categoryNames;
+        return view('editcheck',compact('session_user', 'user'));
     }
     public function update(User $user, UserRequest $request){
         if($request->action === 'editback'){
             return redirect()->route('edit', $user)
-                            ->withInput();
+                            ->withInput(session('edit_key'));
         }
+        $editUser = $request->session()->get('edit_key');
+
         $user = User::findOrFail($user->id);
-        $user->name = $request->input('name');
-        $user->email = $request->input('email');
-        $user->juusyo = $request->input('juusyo');
-        $user->tell = $request->input('tell');
+        $user->name = $editUser['name'];
+        $user->email = $editUser['email'];
+        $user->juusyo = $editUser['juusyo'];
+        $user->tell = $editUser['tell'];
         $user->save();
 
-        $user->categories()->sync($request->categories);
+        $categories = $editUser['categories']; 
+        $user->categories()->sync($categories);
+        $request->session()->forget('edit_key');
         return redirect()->route('users')
                     ->with('update', '更新完了しました');
     }

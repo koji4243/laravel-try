@@ -81,9 +81,9 @@
                 @endforelse
 
                 </tbody>
-                        
                 </div>
             </table>
+<pre>{{ dd(session()->all()) }}</pre>
         </div>
 
 
