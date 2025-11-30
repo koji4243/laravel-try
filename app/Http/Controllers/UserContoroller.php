@@ -33,17 +33,14 @@ class UserContoroller extends Controller
             return redirect()->route('create')
                             ->withInput(session('create_key'));
         }
-        $createUser = $request->session()->get('create_key');
-
         $user = new User();
-        $user->name = $createUser['name'];
-        $user->email = $createUser['email'];
-        $user->juusyo = $createUser['juusyo'];
-        $user->tell = $createUser['tell'];
+        $user->name = session('create_key.name') ;
+        $user->email = session('create_key.email') ;
+        $user->juusyo = session('create_key.juusyo') ;
+        $user->tell = session('create_key.tell') ;
         $user->save();
 
-        $categories = $createUser['categories']; 
-        $user->categories()->attach($categories);
+        $user->categories()->attach(session('create_key.categories'));
         $request->session()->forget('create_key');
         return redirect()->route('users')
                         ->with('create', '新規登録完了しました');
@@ -66,17 +63,14 @@ class UserContoroller extends Controller
             return redirect()->route('edit', $user)
                             ->withInput(session('edit_key'));
         }
-        $editUser = $request->session()->get('edit_key');
-
         $user = User::findOrFail($user->id);
-        $user->name = $editUser['name'];
-        $user->email = $editUser['email'];
-        $user->juusyo = $editUser['juusyo'];
-        $user->tell = $editUser['tell'];
+        $user->name = session('edit_key.name') ;
+        $user->email = session('edit_key.email') ;
+        $user->juusyo = session('edit_key.juusyo') ;
+        $user->tell = session('edit_key.tell') ;
         $user->save();
 
-        $categories = $editUser['categories']; 
-        $user->categories()->sync($categories);
+        $user->categories()->sync( session('edit_key.categories'));
         $request->session()->forget('edit_key');
         return redirect()->route('users')
                     ->with('update', '更新完了しました');
