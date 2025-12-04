@@ -22,7 +22,6 @@
             <div class="row">
                 <div class="col-6 mx-auto my-4">
                     <h1 class="h3 my-2 text-center">下記の内容で更新しますか？</h1>
-
                     <form action="{{ route('put', $user) }}" method="POST">
                         @csrf
                         @method('PUT')

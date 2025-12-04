@@ -44,16 +44,44 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('check') }}" method="post">
+                    <form action="{{ route('check') }}" method="post" enctype="multipart/form-data">
                         @csrf
-                        <div class="form-group mb-1">
-                            <label for="title">名前</label>
-                            <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}">
+                        <div class="row">
+                            <div class="col-8 ">
+                                <div class="form-group mb-1">
+                                    <label for="title">名前</label>
+                                    <input type="text" class="form-control" id="name" name="name" value="{{ old('name') }}">
+                                </div>
+                                <div class="form-group mb-1">
+                                    <label for="title">email</label>
+                                    <input type="text" class="form-control" id="email" name="email" value="{{ old('email') }}">
+                                </div>
+                                <div class="form-group mb-1">
+                                    <label for="image">画像</label>
+                                    <input type="file" 
+                                            class="form-control" 
+                                            id="imageInput" 
+                                            accept="image/png"
+                                            name="image" 
+                                            value="{{ old('image') }}">
+                                </div>
+                            </div>
+
+                            @php
+                                $imgURL = session('image_temp');
+                            @endphp
+                            <div class="p-2 col-4 my-auto">
+                                <img src="{{ $imgURL ? asset('storage/' . $imgURL) : "" }}" 
+                                    width="200" 
+                                    class="{{ $imgURL ? "" : "hidden" }} max-width:100% img-fluid" 
+                                    id="previewImage">
+                                @if (session('image_temp'))
+                                    <button name="action" value="imgDelete" class="my-2 d-block mx-auto btn btn-secondary">画像取り消す</button>
+                                @endif
+                            </div>
                         </div>
-                        <div class="form-group mb-1">
-                            <label for="title">email</label>
-                            <input type="text" class="form-control" id="email" name="email" value="{{ old('email') }}">
-                        </div>
+
+
                         <div class="form-group mb-1">
                             <label for="content">住所</label>
                             <textarea class="form-control" id="juusyo" name="juusyo">{{ old('juusyo') }}</textarea>
@@ -83,5 +111,18 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script>
+        document.getElementById('imageInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const preview = document.getElementById('previewImage');
+            if(file){
+                preview.classList.remove('hidden');
+                preview.src = URL.createObjectURL(file);
+            } else {
+                preview.src = '';
+                preview.classList.add('hidden');
+            }
+        });
+    </script>
 </body>
 </html>

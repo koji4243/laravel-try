@@ -51,6 +51,7 @@
                         <th>住所：</th>
                         <th>電話番号：</th>
                         <th>種別:</th>
+                        <th>画像:</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -75,6 +76,10 @@
                                 <span>・{{ $category->category }}</span>
                             @endforeach
                         </td>
+                    <td width="150">
+                        <img class="p-2 max-width:100% img-fluid" 
+                            src="{{ asset('storage/' . $user->image) }}" 
+                            alt="">
                     </tr>
                     @empty
                     <p class="h4 p-2 text-center">登録がありません</p>
@@ -83,7 +88,6 @@
                 </tbody>
                 </div>
             </table>
-<pre>{{ dd(session()->all()) }}</pre>
         </div>
 
 

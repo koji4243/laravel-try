@@ -21,12 +21,13 @@ class UserRequest extends FormRequest
      */
     public function rules(): array
     {
-        if($this->input('action') === 'go' || $this->input('action') === 'back' || $this->input('action') === 'editback'){
+        if($this->input('action') === 'go' || $this->input('action') === 'back' || $this->input('action') === 'editback' || $this->input('action') === 'imgDelete' ){
             return [];
         }
 
         $rules = [
             'name' => 'required',
+            'image' => 'image|max:1024|mimes:png',
             'juusyo' => 'max:200',
             'tell' => 'required|regex:/^[0-9]+$/',
             'categories' => 'required|array'
