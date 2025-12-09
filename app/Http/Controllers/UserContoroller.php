@@ -20,8 +20,17 @@ class UserContoroller extends Controller
     }
 
     public function check(UserRequest $request){
+        if($request->action === 'imgDelete'){
+            $request->session()->forget('image_temp');
+            return redirect()->route('create')
+                            ->withInput(session('create_key'));
+        }
                             // "create_key"をセッションに入れる
-        $request->session()->put('create_key', $request->all());
+        $request->session()->put('create_key', $request->except('image'));
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('temp','public'); // storageへの保存と、変数への代入
+            session(['image_temp' => $path]);
+        }
         $session_user = $request->session()->get('create_key');
 
         $categoryNames = Category::whereIn('id', $session_user['categories'])->pluck('category')->toArray();
@@ -36,12 +45,15 @@ class UserContoroller extends Controller
         $user = new User();
         $user->name = session('create_key.name') ;
         $user->email = session('create_key.email') ;
+        if (session('image_temp')) { 
+            $user->image = session('image_temp');
+        }
         $user->juusyo = session('create_key.juusyo') ;
         $user->tell = session('create_key.tell') ;
         $user->save();
 
         $user->categories()->attach(session('create_key.categories'));
-        $request->session()->forget('create_key');
+        $request->session()->forget(['create_key', 'image_temp']);
         return redirect()->route('users')
                         ->with('create', '新規登録完了しました');
     }
@@ -51,7 +63,13 @@ class UserContoroller extends Controller
         return view('edit',compact('users','user', 'categories'));
     }
     public function editCheck(UserRequest $request, User $user){
-        $request->session()->put('edit_key', $request->all());
+                        // "edit_key"をセッションに入れる
+        $request->session()->put('edit_key', $request->except('image'));
+        if ($request->hasFile('image')) {
+            $request->session()->forget('image_temp');
+            $path = $request->file('image')->store('temp','public'); // storageへの保存と、変数への代入
+            $request->session()->put('image_temp', $path);
+        }
         $session_user = $request->session()->get('edit_key');
 
         $categoryNames = Category::whereIn('id', $session_user['categories'])->pluck('category')->toArray();

@@ -27,9 +27,22 @@
                         @csrf
                         <button name="action" value="back" class="btn btn-outline-primary my-3" type="submit">&lt;戻る</button>
 
-                    <p>名前：{{ $session_user['name'] }}</p>
-                    <p>email：{{ $session_user['email'] }}</p>
-                    <p>住所：{{ $session_user['juusyo'] }}</p>
+                        <div class="row">
+                            <div class="col-8">
+                                <p>名前：{{ session('create_key.name') }}</p>
+                                <p>email：{{ $session_user['email'] }}</p>
+                                <p>住所：{{ $session_user['juusyo'] }}</p>
+                            </div>
+
+                            @if(session('image_temp'))
+                                <div class="p-2 col-4 d-flex align-items-center justify-content-center">
+                                    <img src="{{ asset('storage/' . session('image_temp')) }}" width="200" class="max-width:100% img-fluid">
+                                </div>
+                            @else
+                                <p class="text-center p-2 col-4 ">no image</p>
+                            @endif
+                        </div>
+
                     <p>電話番号：{{ $session_user['tell'] }}</p>
                     <p>種別：
                         @foreach ($session_user['categories'] as $category)

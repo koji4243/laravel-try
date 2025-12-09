@@ -1,26 +1,7 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>アドレス帳一覧</title>
+@extends('main')
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-</head>
-<body>
-    <style>
-        span{
-            margin-right: 4px;
-        }
-    </style>
-    <header>
-        <nav class="navbar navbar-light bg-light">
-            <div class="container">
-                <a href="{{ route('users') }}" class="navbar-brand">アドレス帳アプリ</a>
-            </div>
-        </nav>
-    </header>
-    <main>
+    @section('contents')
+        <main>
         <div class="container">
             <h1 class="h3 my-3 text-center">アドレス帳一覧</h1>
 
@@ -51,6 +32,7 @@
                         <th>住所：</th>
                         <th>電話番号：</th>
                         <th>種別:</th>
+                        <th>画像:</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -75,6 +57,10 @@
                                 <span>・{{ $category->category }}</span>
                             @endforeach
                         </td>
+                    <td width="150">
+                        <img class="p-2 max-width:100% img-fluid" 
+                            src="{{ asset('storage/' . $user->image) }}" 
+                            alt="">
                     </tr>
                     @empty
                     <p class="h4 p-2 text-center">登録がありません</p>
@@ -83,16 +69,7 @@
                 </tbody>
                 </div>
             </table>
-<pre>{{ dd(session()->all()) }}</pre>
         </div>
-
-
     </main>
-    
-    <footer class="d-flex justify-content-center align-items-center bg-light">
-        <p class="text-muted small mb-0">&copy;  All rights reserved.</p>
-    </footer>
+    @endsection
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
-</body>
-</html>
