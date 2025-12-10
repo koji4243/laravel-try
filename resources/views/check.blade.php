@@ -21,17 +21,23 @@
         <div class="container">
             <div class="row">
                 <div class="col-6 mx-auto my-4">
-                    <h1 class="h3 my-2 text-center">下記の内容で登録しますか？</h1>
+                    <h1 class="h3 my-2 text-center">
+                        @if($users === null)
+                            下記の内容で登録しますか？
+                        @else
+                            下記の内容で更新しますか？
+                        @endif
+                    </h1>
 
-                    <form action="{{ route('store') }}" method="POST">
+                    <form action="{{ $users === null ? route('store') : route('put', $user) }}" method="POST">
                         @csrf
                         <button name="action" value="back" class="btn btn-outline-primary my-3" type="submit">&lt;戻る</button>
 
                         <div class="row">
                             <div class="col-8">
                                 <p>名前：{{ session('create_key.name') }}</p>
-                                <p>email：{{ $session_user['email'] }}</p>
-                                <p>住所：{{ $session_user['juusyo'] }}</p>
+                                <p>email：{{ session('create_key.email') }}</p>
+                                <p>住所：{{ session('create_key.juusyo') }}</p>
                             </div>
 
                             @if(session('image_temp'))
@@ -43,7 +49,7 @@
                             @endif
                         </div>
 
-                    <p>電話番号：{{ $session_user['tell'] }}</p>
+                    <p>電話番号：{{ session('create_key.tell') }}</p>
                     <p>種別：
                         @foreach ($session_user['categories'] as $category)
                             <span>{{ $category }},</span>

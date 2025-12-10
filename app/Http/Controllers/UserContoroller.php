@@ -16,7 +16,8 @@ class UserContoroller extends Controller
     }
     public function create(Category $category,){
         $categories =Category::all();
-        return view('create', compact('categories'));
+        $users = null;
+        return view('create', compact('categories','users'));
     }
 
     public function check(UserRequest $request){
@@ -31,11 +32,11 @@ class UserContoroller extends Controller
             $path = $request->file('image')->store('temp','public'); // storageへの保存と、変数への代入
             session(['image_temp' => $path]);
         }
+        $users = null;
         $session_user = $request->session()->get('create_key');
-
         $categoryNames = Category::whereIn('id', $session_user['categories'])->pluck('category')->toArray();
         $session_user['categories'] = $categoryNames;
-        return view('check',compact('session_user'));
+        return view('check',compact('session_user', 'users'));
     }
         public function store(UserRequest $request){
         if($request->action === 'back'){
@@ -60,7 +61,7 @@ class UserContoroller extends Controller
     public function edit(User $user){
         $categories = Category::all();
         $users = User::with('categories')->find($user->id);
-        return view('edit',compact('users','user', 'categories'));
+        return view('create',compact('users','user', 'categories'));
     }
     public function editCheck(UserRequest $request, User $user){
                         // "edit_key"をセッションに入れる
