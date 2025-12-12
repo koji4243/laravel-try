@@ -20,6 +20,8 @@ class UserContoroller extends Controller
         return view('create', compact('categories','users'));
     }
 
+
+
     public function check(UserRequest $request){
         if($request->action === 'imgDelete'){
             $request->session()->forget('image_temp');
@@ -71,14 +73,15 @@ class UserContoroller extends Controller
             $path = $request->file('image')->store('temp','public'); // storageへの保存と、変数への代入
             $request->session()->put('image_temp', $path);
         }
+        $users = User::all();
         $session_user = $request->session()->get('edit_key');
 
         $categoryNames = Category::whereIn('id', $session_user['categories'])->pluck('category')->toArray();
         $session_user['categories'] = $categoryNames;
-        return view('editcheck',compact('session_user', 'user'));
+        return view('check',compact('session_user', 'user', 'users'));
     }
     public function update(User $user, UserRequest $request){
-        if($request->action === 'editback'){
+        if($request->action === 'editback' || $request->action === 'back'){
             return redirect()->route('edit', $user)
                             ->withInput(session('edit_key'));
         }

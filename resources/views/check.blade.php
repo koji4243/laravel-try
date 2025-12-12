@@ -31,13 +31,15 @@
 
                     <form action="{{ $users === null ? route('store') : route('put', $user) }}" method="POST">
                         @csrf
+                        @if($users !== null)
+                            @method('PUT')
+                        @endif
                         <button name="action" value="back" class="btn btn-outline-primary my-3" type="submit">&lt;戻る</button>
-
                         <div class="row">
                             <div class="col-8">
-                                <p>名前：{{ session('create_key.name') }}</p>
-                                <p>email：{{ session('create_key.email') }}</p>
-                                <p>住所：{{ session('create_key.juusyo') }}</p>
+                                <p>名前：{{ $users === null ? session('create_key.name') : session('edit_key.name') }}</p>
+                                <p>email：{{ $users === null ? session('create_key.email') : session('edit_key.email') }}</p>
+                                <p>住所：{{ $users === null ? session('create_key.juusyo') : session('edit_key.juusyo') }}</p>
                             </div>
 
                             @if(session('image_temp'))
@@ -49,7 +51,7 @@
                             @endif
                         </div>
 
-                    <p>電話番号：{{ session('create_key.tell') }}</p>
+                    <p>電話番号：{{ $users === null ? session('create_key.tell') : session('edit_key.tell') }}</p>
                     <p>種別：
                         @foreach ($session_user['categories'] as $category)
                             <span>{{ $category }},</span>

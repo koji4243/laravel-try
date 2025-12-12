@@ -3,7 +3,10 @@
     @section('contents')
         <main>
         <div class="container">
-            <h1 class="h3 my-3 text-center">アドレス帳一覧</h1>
+            <h1 class="h3 my-3 text-center">
+                <i class="fa-solid fa-mug-hot"></i>
+                アドレス帳一覧
+            </h1>
 
             @if(session('create'))
                 <div class="text-center alert alert-success">
